@@ -127,8 +127,10 @@ BOOL CSerialPort::InitPort(CWnd* pPortOwner,	// the owner (CWnd) of the port (re
 		m_hComm = NULL;
 	}
 
-	// prepare port strings
-	sprintf(szPort, "COM%d", portnr);
+	// prepare port strings]
+	// change for KB115831
+	// sprintf(szPort, "COM%d", portnr);
+	sprintf(szPort, "\\\\.\\COM%d", portnr);
 	sprintf(szBaud, "baud=%d parity=%c data=%d stop=%d", baud, parity, databits, stopbits);
 
 	// get a handle to the port

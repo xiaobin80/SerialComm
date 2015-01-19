@@ -84,14 +84,16 @@ void CSerialCommView::OnInitialUpdate()
 		((CEdit *)GetDlgItem(IDC_EDTSEND))->SetWindowTextA("NOT FOUND");
 		((CEdit *)GetDlgItem(IDC_EDTSEND))->EnableWindow(FALSE);
 
-		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ReplaceSel("NOT FOUND");
-
-		((CButton *)GetDlgItem(IDC_CHECK1LOOP))->EnableWindow(FALSE);
-		((CButton *)GetDlgItem(IDC_BTNSEND))->EnableWindow(FALSE);
+		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ReplaceSel("NOT FOUND");		
+		
 		((CButton *)GetDlgItem(IDC_BTNCONFIG))->EnableWindow(FALSE);
 	}
 
 	((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->ShowWindow(SW_HIDE);
+
+	((CButton *)GetDlgItem(IDC_CHECK1LOOP))->EnableWindow(FALSE);
+	((CButton *)GetDlgItem(IDC_BTNSEND))->EnableWindow(FALSE);
+
 }
 
 
@@ -139,8 +141,8 @@ void CSerialCommView::OnBnClickedBtnconfig()
 	m_nPort = nPortNum + 1;
 	// init the ports
 
-	if (m_Ports[0].InitPort(this, nPortNum + 1, nPortNum == 0 ? 19200 : 9600))
-		m_Ports[0].StartMonitoring();
+	if (m_Ports[0].InitPort(this, m_nPort, nPortNum == 0 ? 19200 : 9600))
+        ;
 	else
 	{
 		// port not found
@@ -150,7 +152,7 @@ void CSerialCommView::OnBnClickedBtnconfig()
 		m_ListBox[i].EnableWindow(FALSE);
 		*/
 		CString strTemp2;
-		strTemp2.Format("%d", nPortNum + 1);
+		strTemp2.Format("%d", m_nPort);
 		strTemp2 = "COM" + strTemp2 + " NOT FOUND" + "\n";
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->SetSel(sizeof(strTemp2), sizeof(strTemp2));
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ReplaceSel(strTemp2);
@@ -194,7 +196,7 @@ void CSerialCommView::OnBnClickedBtnconfig()
 		if (dlg->m_CommTxEmpty)
 			dwCommEvents |= EV_TXEMPTY;
 
-		m_Ports[0].InitPort(this, nPortNum + 1, 
+		m_Ports[0].InitPort(this, m_nPort, 
 			atoi(dlg->m_strBaudRate),
 			dlg->m_strParity[0],
 			atoi(dlg->m_strDataBits),
@@ -203,6 +205,9 @@ void CSerialCommView::OnBnClickedBtnconfig()
 			atoi(dlg->m_strSendBuffer));
 
 		m_Ports[0].StartMonitoring();
+
+        ((CButton *)GetDlgItem(IDC_CHECK1LOOP))->EnableWindow(TRUE);
+		((CButton *)GetDlgItem(IDC_BTNSEND))->EnableWindow(TRUE); 
 
 	}
 
@@ -316,7 +321,7 @@ void CSerialCommView::OnBnClickedCheck1hex()
 			strText.SetAt(nLineLen, _T('\0'));
 			strText.ReleaseBuffer(nLineLen + 1);
 
-			AfxMessageBox(strText);
+			// AfxMessageBox(strText);
 		}
 #endif
 
@@ -409,12 +414,7 @@ void CSerialCommView::OnFileSaveAs()
 	    es.pfnCallback = MyStreamOutCallback;
 
 	    ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->StreamOut(SF_RTF, es);
-	}
-
-
-
-	
-	
+	}	
 }
 
 void CSerialCommView::OnAppExit()

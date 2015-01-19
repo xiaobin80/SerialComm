@@ -32,15 +32,13 @@
 #define IDC_RICHEDIT2LOG2               1024
 #define IDC_BTNSAVE                     1025
 #define IDC_BTNCLEAR                    1026
-#define ID_BUTTON32776                  32776
-#define ID_FIL                          32776
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        150
-#define _APS_NEXT_COMMAND_VALUE         32784
+#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_COMMAND_VALUE         32792
 #define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
