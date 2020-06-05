@@ -66,6 +66,7 @@ public:
 	static DWORD CALLBACK MyStreamOutCallback(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb);
 
 	afx_msg void OnFileSave();
+	afx_msg void OnMnurecord();
 };
 
 #ifndef _DEBUG  // debug version in SerialCommView.cpp

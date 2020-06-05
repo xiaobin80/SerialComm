@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CSerialCommView, CFormView)
 	ON_COMMAND(ID_APP_EXIT, &CSerialCommView::OnAppExit)
 	ON_BN_CLICKED(IDC_BTNSAVE, &CSerialCommView::OnBnClickedBtnsave)
 	ON_COMMAND(ID_FILE_SAVE, &CSerialCommView::OnFileSave)
+	ON_COMMAND(IDC_MNURECORD, &CSerialCommView::OnMnurecord)
 END_MESSAGE_MAP()
 
 // CSerialCommView construction/destruction
@@ -446,4 +447,20 @@ void CSerialCommView::OnFileSave()
 {
 	// TODO: Add your command handler code here
 	CSerialCommView::OnFileSaveAs();
+}
+
+
+void CSerialCommView::OnMnurecord()
+{
+	/// https://docs.microsoft.com/en-us/cpp/mfc/reference/cmenu-class?view=vs-2019#getmenustate
+
+	CMenu * mmenu = ((CSerialCommView *)AfxGetMainWnd())->GetMenu();
+	CMenu * submenu = mmenu->GetSubMenu(0);
+
+	UINT state = submenu->GetMenuState(IDC_MNURECORD, MF_BYCOMMAND);
+
+	if (state & MF_CHECKED)
+		submenu->CheckMenuItem(IDC_MNURECORD, MF_BYCOMMAND | MF_UNCHECKED);
+	else
+		submenu->CheckMenuItem(IDC_MNURECORD, MF_BYCOMMAND | MF_CHECKED);
 }
