@@ -32,6 +32,7 @@
 #define IDC_RICHEDIT2LOG2               1024
 #define IDC_BTNSAVE                     1025
 #define IDC_BTNCLEAR                    1026
+#define IDC_MNURECORD                   2001
 
 // Next default values for new objects
 // 
