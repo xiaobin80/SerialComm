@@ -344,9 +344,10 @@ int CSerialCommView::getLogString(CRichEditCtrl * richEdit, int flag) {
 		strText.SetAt(nLineLen, _T('\0'));
 		strText.ReleaseBuffer(nLineLen + 1);
 
-		boost::thread worker = GetDocument()->workerLogRecord(strText, flag, j+1);
-		worker.join();
 		// AfxMessageBox(strText);
+
+		boost::thread worker = GetDocument()->workerLogRecord(strText, flag, j + 1);
+		worker.join();
 	}
 
 	return 0;

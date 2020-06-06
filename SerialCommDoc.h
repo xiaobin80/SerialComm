@@ -33,6 +33,7 @@ public:
 #endif
 
 protected:
+	char *m_dbName, *m_tableName;
 
 // Generated message map functions
 protected:
