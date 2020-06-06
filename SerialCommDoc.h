@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <boost/thread/thread.hpp>
+#include "sqlite3.h"
 
 class CSerialCommDoc : public CDocument
 {
@@ -35,6 +37,11 @@ protected:
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+
+public:
+	boost::thread workerLogRecord(CString str, int flag, int lineNum));
+
+	int checkDB(char *dbName, char *tableName);
 };
 
 

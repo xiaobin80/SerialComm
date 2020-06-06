@@ -301,31 +301,11 @@ void CSerialCommView::OnBnClickedCheck1loop()
 
 void CSerialCommView::OnBnClickedCheck1hex()
 {
-	// TODO: Add your control notification handler code here
-	DWORD dwCheck;
-	int nLineCount, nLineIndex, nLineLen;
-	CString strText;
-	dwCheck = ((CButton *) GetDlgItem(IDC_CHECK1HEX))->GetCheck();	
-
-	nLineCount = ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->GetLineCount();
+	DWORD dwCheck = ((CButton *) GetDlgItem(IDC_CHECK1HEX))->GetCheck();	
 
 	if (dwCheck) {
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->ShowWindow(SW_NORMAL);
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ShowWindow(SW_HIDE);
-
-#ifdef _DEBUG
-		for (int j = 0; j < nLineCount; j++) {
-			nLineIndex = ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->LineIndex(j);
-			nLineLen = ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->LineLength(nLineIndex);
-
-			((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->GetLine(j, strText.GetBufferSetLength(nLineLen + 1));
-			strText.SetAt(nLineLen, _T('\0'));
-			strText.ReleaseBuffer(nLineLen + 1);
-
-			// AfxMessageBox(strText);
-		}
-#endif
-
 	} else {
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->ShowWindow(SW_HIDE);
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ShowWindow(SW_NORMAL);
@@ -334,7 +314,8 @@ void CSerialCommView::OnBnClickedCheck1hex()
 
 char *CSerialCommView::Hex_Str(unsigned char hex, char *str)
 {
-    char hex_chars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    char hex_chars[16] = 
+	{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 	// *str++ = '0';
     // *str++ = 'x';
@@ -345,6 +326,32 @@ char *CSerialCommView::Hex_Str(unsigned char hex, char *str)
 
 	return str;
 }
+
+int CSerialCommView::getLogString(CRichEditCtrl * richEdit, int flag) {
+    int nLineCount, nLineIndex, nLineLen = 0;
+    CString strText;
+
+	nLineCount = richEdit->GetLineCount();
+
+	for (int j = 0; j < nLineCount; j++) {
+		nLineIndex = richEdit->LineIndex(j);
+		nLineLen = richEdit->LineLength(nLineIndex);
+
+		richEdit->GetLine(
+			j,
+			strText.GetBufferSetLength(nLineLen + 1));
+
+		strText.SetAt(nLineLen, _T('\0'));
+		strText.ReleaseBuffer(nLineLen + 1);
+
+		boost::thread worker = GetDocument()->workerLogRecord(strText, flag, j+1);
+		worker.join();
+		// AfxMessageBox(strText);
+	}
+
+	return 0;
+}
+
 void CSerialCommView::OnBnClickedBtnclear()
 {
 	// TODO: Add your control notification handler code here
@@ -363,7 +370,6 @@ void CSerialCommView::OnBnClickedBtnclear()
 
 void CSerialCommView::OnFileSaveAs()
 {
-	// TODO: Add your command handler code here
     CString strPathName;
 	CString strFileName;
 	CTime   myTime;
@@ -403,19 +409,15 @@ void CSerialCommView::OnFileSaveAs()
 		return;
 
 	CFile cFile(TEXT(strPathName), CFile::modeCreate|CFile::modeWrite);
-	EDITSTREAM es;
+	EDITSTREAM editStream;
 
-	if (((CButton *)GetDlgItem(IDC_CHECK1HEX))->GetCheck()) {
-		es.dwCookie = (DWORD) &cFile;
-	    es.pfnCallback = MyStreamOutCallback;
+	editStream.dwCookie = (DWORD)&cFile;
+	editStream.pfnCallback = MyStreamOutCallback;
 
-		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->StreamOut(SF_RTF, es);
-	} else {
-		es.dwCookie = (DWORD) &cFile;
-	    es.pfnCallback = MyStreamOutCallback;
-
-	    ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->StreamOut(SF_RTF, es);
-	}	
+	if (((CButton *)GetDlgItem(IDC_CHECK1HEX))->GetCheck()) 
+		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->StreamOut(SF_RTF, editStream);
+	else
+	    ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->StreamOut(SF_RTF, editStream);	
 }
 
 void CSerialCommView::OnAppExit()
@@ -430,11 +432,18 @@ void CSerialCommView::OnAppExit()
 
 void CSerialCommView::OnBnClickedBtnsave()
 {
-	// TODO: Add your control notification handler code here
+	int state = getStatSubmenu(0, IDC_MNURECORD);
+
+	if (state & MF_CHECKED) {
+		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
+		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);
+	}
+
 	CSerialCommView::OnFileSaveAs();
 }
 
-DWORD CALLBACK CSerialCommView::MyStreamOutCallback(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb)
+DWORD CALLBACK CSerialCommView::
+MyStreamOutCallback(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb)
 {
 	CFile *pFile = (CFile *)dwCookie;
 
@@ -443,24 +452,47 @@ DWORD CALLBACK CSerialCommView::MyStreamOutCallback(DWORD dwCookie, LPBYTE pbBuf
 
 	return 0;
 }
+
+
 void CSerialCommView::OnFileSave()
 {
-	// TODO: Add your command handler code here
+	int state = getStatSubmenu(0, IDC_MNURECORD);
+
+	if (state & MF_CHECKED) {
+		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
+		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);
+	}
+
 	CSerialCommView::OnFileSaveAs();
 }
 
 
+CMenu * getSubmenu_m(int subIndex) {
+	CMenu *mmenu = ((CSerialCommView *)AfxGetMainWnd())->GetMenu();
+	CMenu *submenu = mmenu->GetSubMenu(subIndex);
+
+	return submenu;
+}
+
+UINT CSerialCommView::getStatSubmenu(int index, UINT paletteID) {
+	/// https://docs.microsoft.com/en-us/cpp/mfc/reference/cmenu-class?view=vs-2019#getmenustate
+	return getSubmenu_m(index)->GetMenuState(paletteID, MF_BYCOMMAND);
+}
+
 void CSerialCommView::OnMnurecord()
 {
-	/// https://docs.microsoft.com/en-us/cpp/mfc/reference/cmenu-class?view=vs-2019#getmenustate
+	int ret = -1;
+	CMenu *submenu = getSubmenu_m(0);
 
-	CMenu * mmenu = ((CSerialCommView *)AfxGetMainWnd())->GetMenu();
-	CMenu * submenu = mmenu->GetSubMenu(0);
+	ret = GetDocument()->checkDB("SerialComm", "com1");
 
-	UINT state = submenu->GetMenuState(IDC_MNURECORD, MF_BYCOMMAND);
+	UINT state = getStatSubmenu(0, IDC_MNURECORD);
 
 	if (state & MF_CHECKED)
 		submenu->CheckMenuItem(IDC_MNURECORD, MF_BYCOMMAND | MF_UNCHECKED);
 	else
 		submenu->CheckMenuItem(IDC_MNURECORD, MF_BYCOMMAND | MF_CHECKED);
+
+	if (ret != 0)
+		submenu->CheckMenuItem(IDC_MNURECORD, MF_BYCOMMAND | MF_UNCHECKED);
 }

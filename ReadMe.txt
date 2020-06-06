@@ -112,28 +112,11 @@ For more information on both of these topics, please see the section on
 redistributing Visual C++ applications in MSDN documentation. 
 
 /////////////////////////////////////////////////////////////////////////////
+About SQLite3:
+1. sqlite3.h
+  Download sqlite-amalgamation-xxx.zip from sqlite.org with sqlite3.h
 
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialComm", "SerialComm\SerialComm.vcxproj", "{886C559E-5E6B-4EEC-9D3B-FE3433013718}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Win32 = Debug|Win32
-		Release|Win32 = Release|Win32
-		Template|Win32 = Template|Win32
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Debug|Win32.ActiveCfg = Debug|Win32
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Debug|Win32.Build.0 = Debug|Win32
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Release|Win32.ActiveCfg = Release|Win32
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Release|Win32.Build.0 = Release|Win32
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Template|Win32.ActiveCfg = Template|Win32
-		{886C559E-5E6B-4EEC-9D3B-FE3433013718}.Template|Win32.Build.0 = Template|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
+2. deploy
+  Download sqlite-dll-xxx.zip from sqlite.org and unzip the dll to the program directory.
 
-/////////////////////////////////////////////////////////////////////////////Above is the sln file
+/////////////////////////////////////////////////////////////////////////////

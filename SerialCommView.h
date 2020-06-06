@@ -60,13 +60,15 @@ public:
 	afx_msg void OnFileSaveAs();
 	afx_msg void OnAppExit();
 	afx_msg void OnBnClickedBtnsave();
+	afx_msg void OnFileSave();
+	afx_msg void OnMnurecord();
 
 public:
 	char *Hex_Str(unsigned char hex, char *str);
 	static DWORD CALLBACK MyStreamOutCallback(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb);
 
-	afx_msg void OnFileSave();
-	afx_msg void OnMnurecord();
+	int getLogString(CRichEditCtrl * richEdit, int flag);
+	UINT getStatSubmenu(int index, UINT paletteID);
 };
 
 #ifndef _DEBUG  // debug version in SerialCommView.cpp

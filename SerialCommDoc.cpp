@@ -23,8 +23,15 @@ END_MESSAGE_MAP()
 
 CSerialCommDoc::CSerialCommDoc()
 {
-	// TODO: add one-time construction code here
+	// TODO: check SQLite3 database and table
+	try
+	{
 
+	}
+	catch (const std::exception&)
+	{
+
+	}
 }
 
 CSerialCommDoc::~CSerialCommDoc()
@@ -76,3 +83,7 @@ void CSerialCommDoc::Dump(CDumpContext& dc) const
 
 
 // CSerialCommDoc commands
+boost::thread 
+CSerialCommDoc::workerLogRecord(CString str, int flag, int lineNum) {
+	// insert sql
+}
