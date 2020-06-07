@@ -40,9 +40,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	boost::thread workerLogRecord(CString str, int flag, int lineNum));
+	int           m_nPort;
+
+	boost::thread workerLogRecord(CStringA strA, int flag, int lineNum);
 
 	int checkDB(char *dbName, char *tableName);
+	
+	/// Nested reference
+	/// class CSerialCommView;
 };
 
 

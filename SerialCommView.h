@@ -8,6 +8,10 @@
 #include "SerialPort.h"
 #include "afxcmn.h"
 
+#include "SerialComm.h"
+#include "ConfigDlg.h"
+#include "EnumSerial.h"
+
 
 class CSerialCommView : public CFormView
 {
@@ -48,7 +52,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CComboBox m_strPortNum;
-	int           m_nPort;
+	/// int           m_nPort;
 
 	afx_msg void OnBnClickedBtnconfig();
 	afx_msg void OnBnClickedBtnsend();

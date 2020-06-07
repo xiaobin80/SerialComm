@@ -2,14 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "SerialComm.h"
 
 #include "SerialCommDoc.h"
 #include "SerialCommView.h"
-
-#include "ConfigDlg.h"
-#include "SerialPort.h"
-#include "EnumSerial.h"
 
 #include <assert.h>
 
@@ -43,7 +38,7 @@ CSerialCommView::CSerialCommView()
 	: CFormView(CSerialCommView::IDD)
 {
 	// TODO: add construction code here
-	m_nPort = 0;
+	/// m_nPort = 0;
 }
 
 CSerialCommView::~CSerialCommView()
@@ -139,10 +134,10 @@ void CSerialCommView::OnBnClickedBtnconfig()
 	if (!strNum.IsEmpty()) 
 		nPortNum = atoi(strNum) - 1;
 
-	m_nPort = nPortNum + 1;
+	GetDocument()->m_nPort = nPortNum + 1;
 	// init the ports
 
-	if (m_Ports[0].InitPort(this, m_nPort, nPortNum == 0 ? 19200 : 9600))
+	if (m_Ports[0].InitPort(this, GetDocument()->m_nPort, nPortNum == 0 ? 19200 : 9600))
         ;
 	else
 	{
@@ -153,7 +148,7 @@ void CSerialCommView::OnBnClickedBtnconfig()
 		m_ListBox[i].EnableWindow(FALSE);
 		*/
 		CString strTemp2;
-		strTemp2.Format("%d", m_nPort);
+		strTemp2.Format("%d", GetDocument()->m_nPort);
 		strTemp2 = "COM" + strTemp2 + " NOT FOUND" + "\n";
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->SetSel(sizeof(strTemp2), sizeof(strTemp2));
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ReplaceSel(strTemp2);
@@ -197,7 +192,7 @@ void CSerialCommView::OnBnClickedBtnconfig()
 		if (dlg->m_CommTxEmpty)
 			dwCommEvents |= EV_TXEMPTY;
 
-		m_Ports[0].InitPort(this, m_nPort, 
+		m_Ports[0].InitPort(this, GetDocument()->m_nPort,
 			atoi(dlg->m_strBaudRate),
 			dlg->m_strParity[0],
 			atoi(dlg->m_strDataBits),
@@ -281,7 +276,7 @@ void CSerialCommView::OnBnClickedCheck1loop()
 	int nTimer, nCurSel;
 	DWORD dwCheck;
 
-	assert(m_nPort > 1);
+	assert(GetDocument()->m_nPort > 1);
 	dwCheck = ((CButton *)GetDlgItem(IDC_CHECK1LOOP))->GetCheck();
 	//
 	
@@ -329,7 +324,7 @@ char *CSerialCommView::Hex_Str(unsigned char hex, char *str)
 
 int CSerialCommView::getLogString(CRichEditCtrl * richEdit, int flag) {
     int nLineCount, nLineIndex, nLineLen = 0;
-    CString strText;
+    CStringA strText;
 
 	nLineCount = richEdit->GetLineCount();
 
