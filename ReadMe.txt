@@ -116,7 +116,7 @@ About SQLite3:
 1. sqlite3.h
   Download sqlite-amalgamation-xxx.zip from sqlite.org with sqlite3.h
 
-2. deploy
-  Download sqlite-dll-xxx.zip from sqlite.org and unzip the dll to the program directory.
+2. sqlite3.lib
+  see [sqlite3lib.md](https://xiaobin80.gitee.io/cnblogs/post/sqlite3lib/)
 
 /////////////////////////////////////////////////////////////////////////////

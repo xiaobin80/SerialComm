@@ -9,6 +9,8 @@
 
 #include "SerialCommDoc.h"
 
+#pragma comment(lib, "sqlite3.lib")
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -246,10 +248,6 @@ CSerialCommDoc::workerLogRecord(CStringA strA, int flag, int lineNum) {
 		// port number
 		strPortNum = (char *)malloc(2);
 		memset(strPortNum, 0, sizeof(strPortNum));
-		/// Nested reference
-		/// m_nPort was originally a member variable of CSerialCommView.
-		//POSITION posView = GetFirstViewPosition();
-		//CSerialCommView *pView = (CSerialCommView *)GetNextView(posView);
 		err = _itoa_s(m_nPort, strPortNum, sizeof(strPortNum), 10);
 		
 		// line number
@@ -295,7 +293,7 @@ CSerialCommDoc::workerLogRecord(CStringA strA, int flag, int lineNum) {
 		rc = sqlite3_exec(db, pSql, sqlite_callback, 0, &zErrMsg);
 
 		if (rc != SQLITE_OK) {
-			fprintf(stderr, "SQL error: %s\n", zErrMsg);
+			fprintf_s(stderr, "SQL error: %s\n", zErrMsg);
 			sqlite3_free(zErrMsg);
 		}
 	}
@@ -329,7 +327,7 @@ int checkTable(sqlite3 *db, char *tableName) {
 	rc = sqlite3_exec(db, sql, sqlite_callback, (void*)data, &zErrMsg);
 
 	if (rc != SQLITE_OK) {
-		fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		fprintf_s(stderr, "SQL error: %s\n", zErrMsg);
 		sqlite3_free(zErrMsg);
 		return(-1);
 	}

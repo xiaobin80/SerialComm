@@ -45,9 +45,6 @@ public:
 	boost::thread workerLogRecord(CStringA strA, int flag, int lineNum);
 
 	int checkDB(char *dbName, char *tableName);
-	
-	/// Nested reference
-	/// class CSerialCommView;
 };
 
 
