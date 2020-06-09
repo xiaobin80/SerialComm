@@ -118,5 +118,12 @@ About SQLite3:
 
 2. sqlite3.lib
   see [sqlite3lib.md](https://xiaobin80.gitee.io/cnblogs/post/sqlite3lib/)
+  
+3. table
+  1) com_num as INTEGER
+  2) line_data as TEXT
+  3) line_num as INTEGER
+  4) date as TEXT
+  5) log_flag as INTEGER
 
 /////////////////////////////////////////////////////////////////////////////
