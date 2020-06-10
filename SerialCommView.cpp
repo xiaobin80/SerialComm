@@ -413,7 +413,7 @@ void CSerialCommView::OnFileSaveAs()
 	if (((CButton *)GetDlgItem(IDC_CHECK1HEX))->GetCheck()) 
 		((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->StreamOut(SF_RTF, editStream);
 	else
-	    ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->StreamOut(SF_RTF, editStream);	
+	    ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->StreamOut(SF_RTF, editStream);
 }
 
 void CSerialCommView::OnAppExit()
@@ -431,8 +431,10 @@ void CSerialCommView::OnBnClickedBtnsave()
 	int state = getStatSubmenu(0, IDC_MNURECORD);
 
 	if (state & MF_CHECKED) {
-		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
-		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);
+		if (((CButton *)GetDlgItem(IDC_CHECK1HEX))->GetCheck())
+			getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
+		else
+			getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);
 	}
 
 	CSerialCommView::OnFileSaveAs();
@@ -455,8 +457,10 @@ void CSerialCommView::OnFileSave()
 	int state = getStatSubmenu(0, IDC_MNURECORD);
 
 	if (state & MF_CHECKED) {
-		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
-		getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);
+		if (((CButton *)GetDlgItem(IDC_CHECK1HEX))->GetCheck())
+			getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1), 1);
+		else
+			getLogString((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2), 2);	
 	}
 
 	CSerialCommView::OnFileSaveAs();
@@ -480,7 +484,7 @@ void CSerialCommView::OnMnurecord()
 	int ret = -1;
 	CMenu *submenu = getSubmenu_m(0);
 
-	ret = GetDocument()->checkDB("SerialComm", "com1");
+	ret = GetDocument()->checkDB("SerialComm.db", "com1");
 
 	UINT state = getStatSubmenu(0, IDC_MNURECORD);
 
