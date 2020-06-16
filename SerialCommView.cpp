@@ -66,6 +66,10 @@ void CSerialCommView::OnInitialUpdate()
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
 
+	// Set em_limittext
+	(CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1)->SendMessageA(EM_LIMITTEXT, 0x7FFFFFFE, 0);
+	(CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2)->SendMessageA(EM_LIMITTEXT, 0x7FFFFFFE, 0);
+
 	// Add String
 	CArray<SSerInfo,SSerInfo&> asi;
 
@@ -237,7 +241,6 @@ LRESULT CSerialCommView::OnCommRx(WPARAM ch, LPARAM port)
     nLen1 = ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->GetWindowTextLengthA();
     ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->SetSel(nLen1, nLen1);
 	((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->ReplaceSel(pTemp);
-	((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG2))->PostMessageA(WM_VSCROLL, SB_BOTTOM, 0);
 
 	// free(pTemp);
 	delete [] pTemp;
@@ -249,7 +252,6 @@ LRESULT CSerialCommView::OnCommRx(WPARAM ch, LPARAM port)
     nLen2 = ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->GetWindowTextLengthA();
     ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->SetSel(nLen2, nLen2);
     ((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->ReplaceSel(strTemp2);
-	((CRichEditCtrl *)GetDlgItem(IDC_RICHEDIT2LOG1))->PostMessageA(WM_VSCROLL, SB_BOTTOM, 0);
 
     
     return 0;
@@ -366,15 +368,13 @@ void CSerialCommView::OnBnClickedBtnclear()
 
 void CSerialCommView::OnFileSaveAs()
 {
-    CString strPathName;
-	CString strFileName;
-	CTime   myTime;
-	int     nYear;
-	int     nMonth;
-	int     nDay;
-	int     nHour;
-	int     nMinute;
-	int     nSecond;
+	char       tmpPath[128];
+    CString    strPathName;
+	CString    strFileName;
+	CTime      myTime;
+	EDITSTREAM editStream;
+	int        nYear, nMonth, nDay, nHour, nMinute, nSecond = 0;
+	DWORD      dwSize = 128;
 
 	myTime = CTime::GetCurrentTime();
 
@@ -385,6 +385,7 @@ void CSerialCommView::OnFileSaveAs()
 	nMinute = myTime.GetMinute();
 	nSecond = myTime.GetSecond();
 
+	GetTempPath(dwSize, tmpPath);
 	strFileName.Format("%d%d%d%d%d%d", nYear, nMonth, nDay, nHour, nMinute, nSecond);
 	strFileName = "D" + strFileName + ".rtf";
 
@@ -397,7 +398,7 @@ void CSerialCommView::OnFileSaveAs()
 		"Serial Comm Data (*.rtf)|*.rtf|Text (*.txt)|*.txt||", 
 		this);
 	fSaveDialog.m_pOFN->lpstrTitle = "Serial Comm Data File (Save As...)";
-	fSaveDialog.m_pOFN->lpstrInitialDir = "D:";
+	fSaveDialog.m_pOFN->lpstrInitialDir = tmpPath;
 
 	if (fSaveDialog.DoModal() == IDOK)
 		strPathName = fSaveDialog.GetPathName();
@@ -405,8 +406,7 @@ void CSerialCommView::OnFileSaveAs()
 		return;
 
 	CFile cFile(TEXT(strPathName), CFile::modeCreate|CFile::modeWrite);
-	EDITSTREAM editStream;
-
+	
 	editStream.dwCookie = (DWORD)&cFile;
 	editStream.pfnCallback = MyStreamOutCallback;
 
