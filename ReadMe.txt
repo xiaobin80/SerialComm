@@ -9,7 +9,7 @@ Foundation Classes but is also a starting point for writing your application.
 This file contains a summary of what you will find in each of the files that
 make up your SerialComm application.
 
-SerialComm.vcproj
+SerialComm.vcxproj
     This is the main project file for VC++ projects generated using an application wizard. 
     It contains information about the version of Visual C++ that generated the file, and 
     information about the platforms, configurations, and project features selected with the
@@ -107,8 +107,10 @@ should add to or customize.
 If your application uses MFC in a shared DLL, you will need 
 to redistribute the MFC DLLs. If your application is in a language 
 other than the operating system's locale, you will also have to 
-redistribute the corresponding localized resources MFC80XXX.DLL. 
+redistribute the corresponding localized resources mfc110XXX.DLL. 
 For more information on both of these topics, please see the section on 
 redistributing Visual C++ applications in MSDN documentation. 
 
 /////////////////////////////////////////////////////////////////////////////
+Multibyte MFC Library for Visual Studio 2013:    
+https://www.microsoft.com/en-us/download/confirmation.aspx?id=40770
