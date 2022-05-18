@@ -117,7 +117,7 @@ About SQLite3:
   Download sqlite-amalgamation-xxx.zip from sqlite.org with sqlite3.h
 
 2. sqlite3.lib
-  see [sqlite3lib.md](https://xiaobin80.gitee.io/cnblogs/post/sqlite3lib/)
+  see [sqlite3lib.md](https://tdtc-hrb.github.io/cnblogs/post/vc-sqlite3lib/)
   
 3. table
   1) com_num as INTEGER
