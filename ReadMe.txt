@@ -118,12 +118,20 @@ About SQLite3:
 
 2. sqlite3.lib
   see [sqlite3lib.md](https://tdtc-hrb.github.io/cnblogs/post/vc-sqlite3lib/)
-  
-3. table
+
+/////////////////////////////////////////////////////////////////////////////
+
+About deployment:
+1. sqlite3.dll
+  Download sqlite-dll-win32-x86-xxx.zip and unzip it, 
+  copy sqlite3.dll to the execution directory.
+
+2. sqlite3 definition
+db name: SerialComm.db
+table name: com1
+(1) field define list:
   1) com_num as INTEGER
   2) line_data as TEXT
   3) line_num as INTEGER
   4) date as TEXT
   5) log_flag as INTEGER
-
-/////////////////////////////////////////////////////////////////////////////
