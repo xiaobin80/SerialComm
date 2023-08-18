@@ -107,10 +107,6 @@ should add to or customize.
 If your application uses MFC in a shared DLL, you will need 
 to redistribute the MFC DLLs. If your application is in a language 
 other than the operating system's locale, you will also have to 
-redistribute the corresponding localized resources mfc110XXX.DLL. 
+redistribute the corresponding localized resources mfc140XXX.DLL. 
 For more information on both of these topics, please see the section on 
-redistributing Visual C++ applications in MSDN documentation. 
-
-/////////////////////////////////////////////////////////////////////////////
-Multibyte MFC Library for Visual Studio 2013:    
-https://www.microsoft.com/en-us/download/confirmation.aspx?id=40770
+redistributing Visual C++ applications in MSDN documentation.
